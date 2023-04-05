@@ -125,7 +125,7 @@ class _HomeState extends State<Home> {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 0,
                             blurRadius: 1,
-                            offset: const Offset(0, 3),
+                            // offset: const Offset(0, 0),
                           )
                         ],
                         color: Colors.grey[100],

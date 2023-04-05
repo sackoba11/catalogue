@@ -69,20 +69,24 @@ class _ProfilPageState extends State<ProfilPage> {
                           borderRadius: BorderRadius.circular(10)),
                       child: Column(
                         children: const [
-                          CustomListtitle(title: "Sacko", icon: Icons.person),
+                          CustomListtitle(
+                              title: "Sacko", icon: "assets/icons/name.png"),
                           Divider(),
                           CustomListtitle(
-                              title: "Allou-Badra", icon: Icons.person),
+                              title: "Allou-Badra",
+                              icon: "assets/icons/name1.png"),
                           Divider(),
                           CustomListtitle(
-                              title: "+225 0555324247", icon: Icons.phone),
+                              title: "+225 0555324247",
+                              icon: "assets/icons/phone.png"),
                           Divider(),
                           CustomListtitle(
-                              title: "badrasacko@gmail.com", icon: Icons.email),
+                              title: "badrasacko@gmail.com",
+                              icon: "assets/icons/email.png"),
                           Divider(),
                           CustomListtitle(
                               title: "Abidjan (Côte D'Ivoire)",
-                              icon: Icons.location_on_rounded)
+                              icon: "assets/icons/locate.png")
                         ],
                       ),
                     ),
@@ -96,13 +100,13 @@ class _ProfilPageState extends State<ProfilPage> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10)),
-                      child: const ListTile(
+                      child: ListTile(
                         style: ListTileStyle.drawer,
                         // shape: Border.all(),
                         dense: true,
-                        leading: Icon(Icons.report_gmailerrorred_rounded,
-                            color: Colors.red),
-                        title: Text(
+                        leading: Image.asset("assets/icons/disconnect.png",
+                            height: 20, width: 20),
+                        title: const Text(
                           "Se deconnecter",
                           style: TextStyle(color: Colors.red),
                         ),
@@ -124,7 +128,7 @@ class _ProfilPageState extends State<ProfilPage> {
 
 class CustomListtitle extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final String icon;
 
   const CustomListtitle({super.key, required this.title, required this.icon});
 
@@ -136,9 +140,9 @@ class CustomListtitle extends StatelessWidget {
           height: 40,
           child: ListTile(
             dense: true,
-            leading: Icon(icon, color: Colors.blue),
+            leading: Image.asset(icon, height: 20, width: 20),
             title: Text(title),
-            trailing: const Icon(Icons.edit),
+            // trailing: const Icon(Icons.edit),
           ),
         ),
       ],
