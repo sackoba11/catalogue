@@ -9,6 +9,10 @@ import 'package:catalogue/screens/profilpage.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ui/google_ui.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../main.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,11 +22,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // Box<Contact>? datas;
+  Box<Contact> data = Hive.box<Contact>(catalogueBoxName);
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    Hive.openBox<Contact>(catalogueBoxName);
     rechercheController = TextEditingController();
+    var data = Hive.box<Contact>(catalogueBoxName);
   }
 
   late TextEditingController rechercheController;
@@ -35,17 +43,29 @@ class _HomeState extends State<Home> {
     }
   }
 
-  List<DataBase> searchs = [];
-
+  // List<DataBase> searchs = [];
+  late Box<Contact> searchs;
   search(String recherhe) {
     if (recherhe.isNotEmpty) {
-      searchs = dataBases
-          .where((element) =>
-              element.titre.toLowerCase().contains(recherhe.toLowerCase()))
-          .toList();
+      searchs = data.values.where((element) =>
+              element.title.toLowerCase().contains(recherhe.toLowerCase()))
+          as Box<Contact>;
+
+      // .where((element) =>
+      //     element.titre.toLowerCase().contains(recherhe.toLowerCase()))
+      // .toList();
     }
     setState(() {});
   }
+  // search(String recherhe) {
+  //   if (recherhe.isNotEmpty) {
+  //     searchs = dataBases
+  //         .where((element) =>
+  //             element.titre.toLowerCase().contains(recherhe.toLowerCase()))
+  //         .toList();
+  //   }
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +182,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             for (var i = 0; i < categorie.length; i++)
               DetailHome(
-                data: (rechercheController.text.isEmpty) ? dataBases : searchs,
+                datas: (rechercheController.text.isEmpty) ? data : searchs,
               ),
           ],
         ),

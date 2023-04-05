@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+import '../main.dart';
 import '../widget/dropdown.dart';
 // import 'package:dropdown_formfield/dropdown_formfield.dart';
 
@@ -22,7 +25,7 @@ class _LiensState extends State<Liens> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    // var size = MediaQuery.of(context).size;
 
     return Scaffold(
         appBar: AppBar(
@@ -46,45 +49,31 @@ class Textfield extends StatefulWidget {
 }
 
 class _TextfieldState extends State<Textfield> {
-  late String controllertypeLien;
   late TextEditingController controllerTitre;
   late TextEditingController controllerLien;
   late TextEditingController controllerDescription;
+  StatutLien? controllerstatut;
+  Relationship? typelien;
   var test = false;
 
-  late String _myActivityResult;
   final formKey = GlobalKey<FormState>();
-  List titrelien = [
-    {
-      "display": "Liens Web",
-      "value": "Liens Web",
-    },
-    {
-      "display": "Page Facebook",
-      "value": "Page Facebook",
-    },
-    {
-      "display": "Page Instagram",
-      "value": "Page Instagram",
-    },
-    {
-      "display": "Page tiktok",
-      "value": "Page tiktok",
-    },
-    {
-      "display": "Page Twitter",
-      "value": "Page Twitter",
-    },
-  ];
 
   @override
   void initState() {
     super.initState();
-    controllertypeLien = '';
-    _myActivityResult = '';
+
     controllerDescription = TextEditingController();
     controllerLien = TextEditingController();
     controllerTitre = TextEditingController();
+  }
+
+  void onFormSubmit() {
+    if (formKey.currentState!.validate()) {
+      Box<Contact> contactsBox = Hive.box<Contact>(catalogueBoxName);
+      contactsBox.add(Contact(controllerTitre.text, controllerLien.text,
+          controllerDescription.text, typelien!, controllerstatut!));
+      Navigator.of(context).pop();
+    }
   }
 
   _saveForm() {
@@ -95,31 +84,25 @@ class _TextfieldState extends State<Textfield> {
         if (controllerTitre.text.isNotEmpty) {
           if (controllerLien.text.isNotEmpty) {
             if (controllerDescription.text.isNotEmpty) {
-              if (controllertypeLien.isNotEmpty) {
-                print(controllerTitre.text);
-                print(controllerLien.text);
-                print(controllerDescription.text);
-                print(controllertypeLien);
-                _myActivityResult = controllertypeLien;
-                controllerTitre.text = '';
-                controllerLien.text = '';
-                controllerDescription.text = '';
-                controllertypeLien = '';
-              } else {
-                test = true;
-                debugPrint("Il y a un champ qui est vide");
-              }
+              print(controllerTitre.text);
+              print(controllerLien.text);
+              print(controllerDescription.text);
+              print(typelien);
+
+              controllerTitre.text = '';
+              controllerLien.text = '';
+              controllerDescription.text = '';
             } else {
               test = true;
-              debugPrint("Il y a un champ qui est vide");
+              debugPrint("Il y a un champ description qui est vide");
             }
           } else {
             test = true;
-            debugPrint("Il y a un champ qui est vide");
+            debugPrint("Il y a un champ lien qui est vide");
           }
         } else {
           test = true;
-          debugPrint("Il y a un champ qui est vide");
+          debugPrint("Il y a un champ titre qui est vide");
         }
       });
     }
@@ -160,19 +143,21 @@ class _TextfieldState extends State<Textfield> {
                   decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
                       )),
                   child: Column(
                     children: [
                       Container(
+                        margin: const EdgeInsets.only(top: 10.0, right: 0),
+
                         // decoration: BoxDecoration(color: Colors.grey[200]),
                         child: TextFormField(
                           controller: controllerTitre,
                           keyboardType: TextInputType.text,
                           validator: (text) {
                             if (text == null || text.isEmpty) {
-                              return 'Text is empty';
+                              return 'Veuillez remplir ce champ';
                             }
                             return null;
                           },
@@ -197,7 +182,7 @@ class _TextfieldState extends State<Textfield> {
                               contentPadding: EdgeInsets.only(left: 10)),
                           validator: (text) {
                             if (text == null || text.isEmpty) {
-                              return 'Text is empty';
+                              return 'Veuillez remplir ce champ';
                             }
                             return null;
                           },
@@ -217,7 +202,7 @@ class _TextfieldState extends State<Textfield> {
                               contentPadding: EdgeInsets.only(left: 10)),
                           validator: (text) {
                             if (text == null || text.isEmpty) {
-                              return 'Text is empty';
+                              return 'Veuillez remplir ce champ';
                             }
                             return null;
                           },
@@ -225,27 +210,45 @@ class _TextfieldState extends State<Textfield> {
                       ),
                       Divider(),
                       Container(
-                        // padding: EdgeInsets.only(left: 15, right: 15),
-                        child: DropDownFormField(
-                          titleText: 'Type de Liens',
-                          value: controllertypeLien,
-                          onSaved: (value) {
-                            setState(() {
-                              if (controllertypeLien.isNotEmpty) {
-                                controllertypeLien = value;
-                              } else {
-                                print("controllertypeLien est vide");
-                              }
-                            });
-                          },
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        child: DropdownButtonFormField(
+                          decoration: const InputDecoration(
+                            enabledBorder: InputBorder.none,
+                          ),
+                          items: typeLiens.keys.map((Relationship value) {
+                            return DropdownMenuItem<Relationship>(
+                              value: value,
+                              child: Text(typeLiens[value]!),
+                            );
+                          }).toList(),
+                          value: typelien,
+                          hint: const Text("Type du Lien"),
                           onChanged: (value) {
                             setState(() {
-                              controllertypeLien = value;
+                              typelien = value!;
                             });
                           },
-                          dataSource: titrelien,
-                          textField: 'display',
-                          valueField: 'value',
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 15, right: 15),
+                        child: DropdownButtonFormField(
+                          decoration: const InputDecoration(
+                              // enabledBorder: InputBorder.none,
+                              ),
+                          items: statutLiens.keys.map((StatutLien value) {
+                            return DropdownMenuItem<StatutLien>(
+                              value: value,
+                              child: Text(statutLiens[value]!),
+                            );
+                          }).toList(),
+                          value: controllerstatut,
+                          hint: const Text("statut du Lien"),
+                          onChanged: (value) {
+                            setState(() {
+                              controllerstatut = value!;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -255,19 +258,15 @@ class _TextfieldState extends State<Textfield> {
               Container(
                 height: 80,
                 width: 200,
-                padding: EdgeInsets.all(18),
+                padding: const EdgeInsets.all(18),
                 child: ElevatedButton(
                   child: Text(
                     'VALIDER',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   ),
-                  onPressed: _saveForm,
+                  onPressed: onFormSubmit,
                 ),
               ),
-              // Container(
-              //   padding: EdgeInsets.all(20),
-              //   child: Text(_myActivityResult),
-              // )
             ],
           ),
         ),

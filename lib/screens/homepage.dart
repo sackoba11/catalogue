@@ -6,9 +6,14 @@ import 'package:catalogue/screens/components/detailHome.dart';
 import 'package:catalogue/screens/drawer.dart';
 import 'package:catalogue/data/data.dart';
 import 'package:catalogue/screens/profilpage.dart';
+import 'package:flutter/foundation.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ui/google_ui.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../main.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -18,14 +23,16 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  late Box<Contact> data;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     rechercheController = TextEditingController();
+    var data = Hive.box<Contact>(catalogueBoxName).listenable();
   }
 
-  List<DataBase> searchs = [];
+  late Box<Contact> searchs;
   late TextEditingController rechercheController;
 
   bool platform() {
@@ -38,10 +45,13 @@ class _HomepageState extends State<Homepage> {
 
   search(String recherhe) {
     if (recherhe.isNotEmpty) {
-      searchs = dataBases
-          .where((element) =>
-              element.titre.toLowerCase().contains(recherhe.toLowerCase()))
-          .toList();
+      searchs = data.values.where((element) =>
+              element.title.toLowerCase().contains(recherhe.toLowerCase()))
+          as Box<Contact>;
+
+      // .where((element) =>
+      //     element.titre.toLowerCase().contains(recherhe.toLowerCase()))
+      // .toList();
     }
     setState(() {});
   }
@@ -174,8 +184,7 @@ class _HomepageState extends State<Homepage> {
             children: <Widget>[
               for (var i = 0; i < categorie.length; i++)
                 DetailHome(
-                  data:
-                      (rechercheController.text.isEmpty) ? dataBases : searchs,
+                  datas: (rechercheController.text.isEmpty) ? data : searchs,
                 ),
             ],
           ),

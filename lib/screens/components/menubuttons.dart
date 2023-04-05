@@ -4,6 +4,8 @@ import 'package:catalogue/screens/private.dart';
 import 'package:catalogue/screens/profilpage.dart';
 import 'package:flutter/material.dart';
 
+import '../lien1.dart';
+
 class MenuButton extends StatefulWidget {
   const MenuButton({super.key});
 
@@ -48,8 +50,8 @@ class _MenuButtonState extends State<MenuButton> {
               ],
             ),
             onTap: () {
-              var route =
-                  MaterialPageRoute(builder: (BuildContext context) => Liens());
+              var route = MaterialPageRoute(
+                  builder: (BuildContext context) => const Liens());
               Navigator.of(context).push(route);
             },
           ),

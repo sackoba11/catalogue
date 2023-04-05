@@ -1,10 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:google_ui/google_ui.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'screens/home.dart';
-import 'screens/homepage.dart';
+part 'main.g.dart';
 
-void main() {
+// import 'screens/homepage.dart';
+
+const String catalogueBoxName = "DBcatalogues";
+const favoritesBox = 'favorite_books';
+
+@HiveType(typeId: 2)
+enum StatutLien {
+  @HiveField(0)
+  Public,
+  @HiveField(1)
+  Prive,
+}
+
+const statutLiens = <StatutLien, String>{
+  StatutLien.Public: "Public",
+  StatutLien.Prive: "Prive",
+};
+
+@HiveType(typeId: 1)
+enum Relationship {
+  @HiveField(0)
+  Liens_Web,
+  @HiveField(1)
+  Page_Facebook,
+  @HiveField(2)
+  Page_Instagram,
+  @HiveField(3)
+  Page_Tiktok,
+  @HiveField(4)
+  Page_Twitter
+}
+
+const typeLiens = <Relationship, String>{
+  Relationship.Liens_Web: "Liens Web",
+  Relationship.Page_Facebook: "Page Facebook",
+  Relationship.Page_Instagram: "Page Instagram",
+  Relationship.Page_Tiktok: "Page Tiktok",
+  Relationship.Page_Twitter: "Page Twitter",
+};
+
+@HiveType(typeId: 0)
+class Contact {
+  @HiveField(0)
+  String title;
+  @HiveField(1)
+  String subtitle;
+  @HiveField(2)
+  Relationship typeLiens;
+  @HiveField(3)
+  String description;
+  @HiveField(4)
+  StatutLien statut;
+
+  Contact(
+      this.title, this.subtitle, this.description, this.typeLiens, this.statut);
+}
+
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(ContactAdapter());
+  Hive.registerAdapter(RelationshipAdapter());
+  Hive.registerAdapter(StatutLienAdapter());
+  await Hive.openBox<Contact>(catalogueBoxName);
+  await Hive.openBox<String>(favoritesBox);
+
   runApp(const MyApp());
 }
 

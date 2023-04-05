@@ -5,6 +5,7 @@ import 'package:catalogue/screens/private.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ui/google_ui.dart';
 
+import 'lien1.dart';
 import 'profilpage.dart';
 
 class DrawerPage extends StatelessWidget {
