@@ -5,8 +5,8 @@ import 'package:catalogue/screens/private.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ui/google_ui.dart';
 
-import 'lien1.dart';
-import 'profilpage.dart';
+import '../../testwidget/lien1.dart';
+import '../profilpage.dart';
 
 class DrawerPage extends StatelessWidget {
   const DrawerPage({Key? key}) : super(key: key);

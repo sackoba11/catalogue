@@ -51,6 +51,8 @@ class RelationshipAdapter extends TypeAdapter<Relationship> {
         return Relationship.Page_Tiktok;
       case 4:
         return Relationship.Page_Twitter;
+      case 5:
+        return Relationship.Autres;
       default:
         return Relationship.Liens_Web;
     }
@@ -73,6 +75,9 @@ class RelationshipAdapter extends TypeAdapter<Relationship> {
         break;
       case Relationship.Page_Twitter:
         writer.writeByte(4);
+        break;
+      case Relationship.Autres:
+        writer.writeByte(5);
         break;
     }
   }

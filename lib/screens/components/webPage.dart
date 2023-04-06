@@ -7,33 +7,24 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../main.dart';
 import '../../widget/favoris.dart';
 
-class DetailHome extends StatefulWidget {
-  const DetailHome({super.key, required this.datas, required this.recherche});
+class WebPage extends StatefulWidget {
+  const WebPage({
+    super.key,
+    required this.datas,
+  });
   final Box<Contact>? datas;
-  final String recherche;
 
   @override
-  State<DetailHome> createState() => _DetailHomeState();
+  State<WebPage> createState() => _WebPageState();
 }
 
-class _DetailHomeState extends State<DetailHome> {
+class _WebPageState extends State<WebPage> {
   Box<String>? favoriteBooksBox;
   @override
   void initState() {
     super.initState();
     favoriteBooksBox = Hive.box(favoritesBox);
   }
-
-//  late String searchs;
-//   search(String recherhe) {
-//     if (recherhe.isNotEmpty) {
-//       searchs = dataBases
-//           .where((element) =>
-//               element.titre.toLowerCase().contains(recherhe.toLowerCase()))
-//           .toList();
-//     }
-//     setState(() {});
-//   }
 
   Widget getIcon(int index) {
     if (favoriteBooksBox!.containsKey(index)) {
@@ -97,43 +88,45 @@ class _DetailHomeState extends State<DetailHome> {
                   launch(b.subtitle);
                   // launchUrl(Uri.http(authority) subtitle )
                 },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTile(
-                      title: Padding(
-                        padding: const EdgeInsets.only(bottom: 5.0),
-                        child: Text(
-                          b.title,
-                          style: const TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                              decorationThickness: 2),
-                        ),
-                      ),
-                      subtitle: Text(
-                        b.subtitle,
-                        style: const TextStyle(
-                            color: Colors.green, decorationThickness: 2),
-                      ),
-                      trailing: IconButton(
-                        icon: getIcon(index),
-                        onPressed: () => onFavoritePress(index),
-                      ),
-                      // const Favorite(
-                      //   color: Colors.grey,
-                      // )
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, bottom: 8.0, right: 15),
-                        child: Flexible(child: Text(b.description))),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ));
+                child: (d == "Liens Web")
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListTile(
+                            title: Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: Text(
+                                b.title,
+                                style: const TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                    decorationThickness: 2),
+                              ),
+                            ),
+                            subtitle: Text(
+                              b.subtitle,
+                              style: const TextStyle(
+                                  color: Colors.green, decorationThickness: 2),
+                            ),
+                            trailing: IconButton(
+                              icon: getIcon(index),
+                              onPressed: () => onFavoritePress(index),
+                            ),
+                            // const Favorite(
+                            //   color: Colors.grey,
+                            // )
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15, bottom: 8.0, right: 15),
+                              child: Flexible(child: Text(b.description))),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      )
+                    : Center());
           },
         );
       },

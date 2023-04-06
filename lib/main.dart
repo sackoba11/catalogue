@@ -35,7 +35,9 @@ enum Relationship {
   @HiveField(3)
   Page_Tiktok,
   @HiveField(4)
-  Page_Twitter
+  Page_Twitter,
+  @HiveField(5)
+  Autres
 }
 
 const typeLiens = <Relationship, String>{
@@ -44,6 +46,7 @@ const typeLiens = <Relationship, String>{
   Relationship.Page_Instagram: "Page Instagram",
   Relationship.Page_Tiktok: "Page Tiktok",
   Relationship.Page_Twitter: "Page Twitter",
+  Relationship.Autres: "Autres"
 };
 
 @HiveType(typeId: 0)
@@ -62,6 +65,8 @@ class Contact {
   Contact(
       this.title, this.subtitle, this.description, this.typeLiens, this.statut);
 }
+
+Box<Contact> openBoxContact = Hive.box<Contact>(catalogueBoxName);
 
 void main() async {
   await Hive.initFlutter();

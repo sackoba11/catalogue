@@ -4,7 +4,7 @@ import 'package:catalogue/screens/private.dart';
 import 'package:catalogue/screens/profilpage.dart';
 import 'package:flutter/material.dart';
 
-import '../lien1.dart';
+import '../../testwidget/lien1.dart';
 
 class MenuButton extends StatefulWidget {
   const MenuButton({super.key});
@@ -64,10 +64,11 @@ class _MenuButtonState extends State<MenuButton> {
                 Text("Favoris")
               ],
             ),
-            onTap: () {
+            onTap: () async {
               var route = MaterialPageRoute(
-                  builder: (BuildContext context) => FavorisPage());
-              Navigator.of(context).push(route);
+                  builder: (BuildContext context) => const FavorisPage());
+              await Navigator.of(context).push(route);
+              setState(() {});
             },
           ),
           GestureDetector(

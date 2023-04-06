@@ -32,6 +32,7 @@ class _PrivateState extends State<Private> {
               itemCount: box.length,
               itemBuilder: (context, index) {
                 Contact c = box.getAt(index)!;
+                String d = typeLiens[c.typeLiens]!;
                 String statut = statutLiens[c.statut]!;
                 return InkWell(
                     onLongPress: () {
