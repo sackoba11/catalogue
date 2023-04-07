@@ -141,7 +141,7 @@ class _HomeState extends State<Home> {
                       decoration: InputDecoration(
                           icon: const Padding(
                             padding: EdgeInsets.only(left: 8.0),
-                            child: Icon(Icons.search, color: Colors.blue),
+                            child: Icon(Icons.search, color: Color(0x6C63FF)),
                           ),
                           border: InputBorder.none,
                           hintText:
