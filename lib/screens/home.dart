@@ -47,7 +47,7 @@ class _HomeState extends State<Home> {
   }
 
   // List<DataBase> searchs = [];
-  late Box<Contact> searchs;
+  late Box<Contact>? searchs;
   search(String recherhe) {
     if (recherhe.isNotEmpty) {
       searchs = data.values.where((element) =>

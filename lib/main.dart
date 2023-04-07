@@ -4,12 +4,14 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'screens/home.dart';
+import 'theme.dart';
 part 'main.g.dart';
 
 // import 'screens/homepage.dart';
 
 const String catalogueBoxName = "DBcatalogues";
-const favoritesBox = 'favorite_books';
+const favoritesBox = 'favoriteLink';
+const privateBox = "privateLink";
 
 @HiveType(typeId: 2)
 enum StatutLien {
@@ -75,7 +77,7 @@ void main() async {
   Hive.registerAdapter(StatutLienAdapter());
   await Hive.openBox<Contact>(catalogueBoxName);
   await Hive.openBox<String>(favoritesBox);
-
+  await Hive.openBox<Contact>(privateBox);
   runApp(const MyApp());
 }
 
@@ -86,13 +88,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GoogleUI(
       builder: (context, theme, darkTheme) {
-        return MaterialApp(
+        return const MaterialApp(
           debugShowCheckedModeBanner: false,
           title: "Catalogue",
-          theme: theme,
+          // darkTheme: ThemeData.dark(),
           themeMode: ThemeMode.system,
           // darkTheme: darkTheme,
-          home: const Home(),
+          // theme: theme,
+          home: Home(),
         );
       },
     );

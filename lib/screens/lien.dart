@@ -30,7 +30,12 @@ class _LiensState extends State<Liens> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Ajout de Liens"),
+          elevation: 0,
+          backgroundColor: Colors.grey[300],
+          title: const Text(
+            "Ajout de Liens",
+            style: TextStyle(color: Colors.black),
+          ),
         ),
         body: Container(
           color: Colors.grey[300],
@@ -122,19 +127,14 @@ class _TextfieldState extends State<Textfield> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                height: 150,
-                width: 200,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/2.png"))),
-              ),
-              const Padding(
-                padding:
-                    EdgeInsets.only(top: 0.0, bottom: 50, left: 15, right: 15),
-                child: Text(
-                  "Veuillez renseigner ces champs SVP !!!",
-                  style: TextStyle(fontSize: 15),
+              Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 50.0),
+                child: Container(
+                  height: 150,
+                  width: 200,
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/icons/Group1.png"))),
                 ),
               ),
               Padding(
@@ -163,7 +163,7 @@ class _TextfieldState extends State<Textfield> {
                           },
                           decoration: const InputDecoration(
                               // errorText: test ? "Veuillez repmlir ce champ" : null,
-                              label: Text("Titre du lien"),
+                              label: Text("Titre"),
                               border: InputBorder.none,
                               hintText: "Saississez ...",
                               contentPadding: EdgeInsets.only(left: 10)),
@@ -177,7 +177,7 @@ class _TextfieldState extends State<Textfield> {
                           keyboardType: TextInputType.url,
                           decoration: const InputDecoration(
                               border: InputBorder.none,
-                              label: Text("Lien site"),
+                              label: Text("Lien du site"),
                               hintText: "Saississez ...",
                               contentPadding: EdgeInsets.only(left: 10)),
                           validator: (text) {
@@ -193,7 +193,7 @@ class _TextfieldState extends State<Textfield> {
                         // decoration: BoxDecoration(color: Colors.grey[200]),
                         child: TextFormField(
                           controller: controllerDescription,
-                          maxLines: 5,
+                          maxLines: 4,
                           keyboardType: TextInputType.multiline,
                           decoration: const InputDecoration(
                               border: InputBorder.none,
@@ -222,7 +222,10 @@ class _TextfieldState extends State<Textfield> {
                             );
                           }).toList(),
                           value: typelien,
-                          hint: const Text("Type du Lien"),
+                          hint: const Text(
+                            "Type du Lien",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           onChanged: (value) {
                             setState(() {
                               typelien = value!;
@@ -230,12 +233,13 @@ class _TextfieldState extends State<Textfield> {
                           },
                         ),
                       ),
+                      Divider(),
                       Container(
                         padding: EdgeInsets.only(left: 15, right: 15),
                         child: DropdownButtonFormField(
                           decoration: const InputDecoration(
-                              // enabledBorder: InputBorder.none,
-                              ),
+                            enabledBorder: InputBorder.none,
+                          ),
                           items: statutLiens.keys.map((StatutLien value) {
                             return DropdownMenuItem<StatutLien>(
                               value: value,
@@ -243,7 +247,10 @@ class _TextfieldState extends State<Textfield> {
                             );
                           }).toList(),
                           value: controllerstatut,
-                          hint: const Text("statut du Lien"),
+                          hint: const Text(
+                            "Statut du Lien",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                           onChanged: (value) {
                             setState(() {
                               controllerstatut = value!;
@@ -257,14 +264,17 @@ class _TextfieldState extends State<Textfield> {
               ),
               Container(
                 height: 80,
-                width: 200,
+                width: size.width,
                 padding: const EdgeInsets.all(18),
                 child: ElevatedButton(
-                  child: Text(
-                    'VALIDER',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                  ),
                   onPressed: onFormSubmit,
+                  child: const Text(
+                    'VALIDER',
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
                 ),
               ),
             ],

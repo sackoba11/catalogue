@@ -70,23 +70,23 @@ class _ProfilPageState extends State<ProfilPage> {
                       child: Column(
                         children: const [
                           CustomListtitle(
-                              title: "Sacko", icon: "assets/icons/name.png"),
+                              title: "Sacko", icon: "assets/icons/name2.png"),
                           Divider(),
                           CustomListtitle(
                               title: "Allou-Badra",
-                              icon: "assets/icons/name1.png"),
+                              icon: "assets/icons/name3.png"),
                           Divider(),
                           CustomListtitle(
                               title: "+225 0555324247",
-                              icon: "assets/icons/phone.png"),
+                              icon: "assets/icons/phone1.png"),
                           Divider(),
                           CustomListtitle(
                               title: "badrasacko@gmail.com",
-                              icon: "assets/icons/email.png"),
+                              icon: "assets/icons/email1.png"),
                           Divider(),
                           CustomListtitle(
                               title: "Abidjan (Côte D'Ivoire)",
-                              icon: "assets/icons/locate.png")
+                              icon: "assets/icons/locate1.png")
                         ],
                       ),
                     ),

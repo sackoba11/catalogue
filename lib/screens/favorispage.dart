@@ -43,129 +43,116 @@ class _FavorisPageState extends State<FavorisPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Favoris"),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+          ),
+          title: const Text(
+            "Favoris",
+            style: TextStyle(color: Colors.black),
+          ),
           centerTitle: true,
+          elevation: 0,
+          backgroundColor: Colors.grey[100],
         ),
-        body: ValueListenableBuilder(
-          valueListenable: Hive.box<Contact>(catalogueBoxName).listenable(),
-          builder: (context, Box<Contact> box, _) {
-            if (box.values.isEmpty)
-              return Center(
-                child: const Text("Aucun lien n'a été trouvé"),
-              );
-            return ListView.builder(
-              itemCount: box.length,
-              itemBuilder: (context, index) {
-                Contact c = box.getAt(index)!;
-                String statut = statutLiens[c.statut]!;
-                return InkWell(
-                    onLongPress: () {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (_) => AlertDialog(
-                          content: Text(
-                            "Voulez-vous supprimer ce lien: ${c.title}?",
-                          ),
-                          actions: <Widget>[
-                            ElevatedButton(
-                              child: Text("NON"),
-                              onPressed: () => Navigator.of(context).pop(),
+        body: Container(
+          color: Colors.grey[300],
+          child: ValueListenableBuilder(
+            valueListenable: Hive.box<Contact>(catalogueBoxName).listenable(),
+            builder: (context, Box<Contact> box, _) {
+              if (box.values.isEmpty) {
+                return const Center(
+                  child: Text("Aucun lien n'a été trouvé"),
+                );
+              }
+              return ListView.builder(
+                itemCount: box.length,
+                itemBuilder: (context, index) {
+                  Contact c = box.getAt(index)!;
+                  String statut = statutLiens[c.statut]!;
+                  return InkWell(
+                      onLongPress: () {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (_) => AlertDialog(
+                            content: Text(
+                              "Voulez-vous supprimer ce lien: ${c.title}?",
                             ),
-                            ElevatedButton(
-                              child: Text("OUI"),
-                              onPressed: () async {
-                                Navigator.of(context).pop();
-                                await box.deleteAt(index);
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    onTap: () {
-                      launch(c.subtitle);
-                      // launchUrl(Uri.http(authority) subtitle )
-                    },
-                    child: (favoriteBooksBox!.containsKey(index))
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ListTile(
-                                title: Padding(
-                                  padding: const EdgeInsets.only(bottom: 5.0),
-                                  child: Text(
-                                    c.title,
-                                    style: const TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
-                                        decorationThickness: 2),
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  c.subtitle,
-                                  style: const TextStyle(
-                                      color: Colors.green,
-                                      decorationThickness: 2),
-                                ),
-                                trailing: IconButton(
-                                  icon: getIcon(index),
-                                  onPressed: () => onFavoritePress(index),
-                                ),
-                                // _isfavorite
-                                //     ? IconButton(
-                                //         onPressed: _toggleFavorite,
-                                //         icon: const Icon(
-                                //           Icons.favorite,
-                                //           color: Colors.red,
-                                //         ),
-                                //       )
-                                // : null
+                            actions: <Widget>[
+                              ElevatedButton(
+                                child: Text("NON"),
+                                onPressed: () => Navigator.of(context).pop(),
                               ),
-                              Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 15, bottom: 8.0, right: 15),
-                                  child: Container(
-                                    // width: size.width / 1.1,
-                                    // height: 80,
-                                    child: Flexible(child: Text(c.description)),
-                                  )),
-                              const SizedBox(
-                                height: 10,
+                              ElevatedButton(
+                                child: Text("OUI"),
+                                onPressed: () async {
+                                  Navigator.of(context).pop();
+                                  await box.deleteAt(index);
+                                },
                               ),
                             ],
-                          )
-                        // ModelDetail(
-                        //     title: c.title,
-                        //     subtitle: c.subtitle,
-                        //     description: c.description,
-                        //   )
-                        : Center());
-              },
-            );
-          },
-        )
-
-        // ListView(children: [
-        //   if (data.isNotEmpty)
-        //     for (var i in dataBases)
-        //       ModelDetail(
-        //         title: i.titre,
-        //         subtitle: i.soustitre,
-        //         description: i.description,
-        //       )
-        //   else
-        //     Padding(
-        //       padding: const EdgeInsets.only(top: 50.0),
-        //       child: Center(
-        //           child: Text(
-        //         "pas de contenu ",
-        //         style: TextStyle(fontSize: 18),
-        //       )),
-        //     )
-        // ])
-        );
+                          ),
+                        );
+                      },
+                      onTap: () {
+                        launch(c.subtitle);
+                        // launchUrl(Uri.http(authority) subtitle )
+                      },
+                      child: (favoriteBooksBox?.values.length != null)
+                          ? ((favoriteBooksBox!.containsKey(index))
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ListTile(
+                                      title: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 5.0),
+                                        child: Text(
+                                          c.title,
+                                          style: const TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold,
+                                              decorationThickness: 2),
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        c.subtitle,
+                                        style: const TextStyle(
+                                            color: Colors.green,
+                                            decorationThickness: 2),
+                                      ),
+                                      trailing: IconButton(
+                                        icon: getIcon(index),
+                                        onPressed: () => onFavoritePress(index),
+                                      ),
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15, bottom: 0.0, right: 15),
+                                        child: Flexible(
+                                            child: Text(c.description))),
+                                    const Divider()
+                                  ],
+                                )
+                              : Center())
+                          : const Center(
+                              child: Text(
+                                "data",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ));
+                },
+              );
+            },
+          ),
+        ));
   }
 }
 

@@ -57,10 +57,11 @@ class _DetailHomeState extends State<DetailHome> {
     return ValueListenableBuilder(
       valueListenable: Hive.box<Contact>(catalogueBoxName).listenable(),
       builder: (context, Box<Contact> box, _) {
-        if (box.values.isEmpty)
-          return Center(
-            child: const Text("Aucun lien n'a été trouvé"),
+        if (box.values.isEmpty) {
+          return const Center(
+            child: Text("Aucun lien n'a été trouvé"),
           );
+        }
         return ListView.builder(
           itemCount: box.length,
           itemBuilder: (context, index) {
@@ -121,17 +122,12 @@ class _DetailHomeState extends State<DetailHome> {
                         icon: getIcon(index),
                         onPressed: () => onFavoritePress(index),
                       ),
-                      // const Favorite(
-                      //   color: Colors.grey,
-                      // )
                     ),
                     Padding(
                         padding: const EdgeInsets.only(
-                            left: 15, bottom: 8.0, right: 15),
+                            left: 15, bottom: 0.0, right: 15),
                         child: Flexible(child: Text(b.description))),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    Divider()
                   ],
                 ));
           },
